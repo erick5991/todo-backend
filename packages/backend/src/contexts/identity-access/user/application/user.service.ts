@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UserRepository } from '../domain/user.repository';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import * as argon2 from 'argon2';
 import { toSafeUser, toSafeUsers } from '../domain/user.entity';
 import { NotificationPort } from 'src/contexts/tasks/todo/domain/notification.port';
@@ -15,6 +16,14 @@ export class UserService {
   async findAll() {
     const users = await this.userRepository.findAll();
     return toSafeUsers(users);
+  }
+
+  async findOne(id: string) {
+    const user = await this.userRepository.findById(id);
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+    return toSafeUser(user);
   }
 
   async create(dto: CreateUserDto, userId: string) {
@@ -47,5 +56,30 @@ export class UserService {
     });
 
     return toSafeUser(user);
+  }
+
+  async update(id: string, dto: UpdateUserDto) {
+    await this.findOne(id);
+
+    const password = dto.password
+      ? await argon2.hash(dto.password, {
+          type: argon2.argon2id,
+          memoryCost: 19456,
+          timeCost: 2,
+          parallelism: 1,
+        })
+      : undefined;
+
+    const updated = await this.userRepository.update(id, {
+      email: dto.email,
+      name: dto.name,
+      password,
+    });
+    return toSafeUser(updated!);
+  }
+
+  async remove(id: string) {
+    await this.findOne(id);
+    await this.userRepository.delete(id);
   }
 }
