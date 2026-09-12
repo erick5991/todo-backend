@@ -1,1 +1,0 @@
-{"root":["./src/App.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/components/Layout.tsx","./src/components/NotificationBell.tsx","./src/components/Toast.tsx","./src/hooks/useAuth.tsx","./src/hooks/useNotifications.ts","./src/lib/api.ts","./src/pages/CategoriesPage.tsx","./src/pages/LoginPage.tsx","./src/pages/TodosPage.tsx","./src/pages/UsersPage.tsx"],"version":"5.8.3"}
