@@ -52,6 +52,7 @@ export class UserController {
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo usuario' })
   @ApiCreatedResponse({ description: 'Usuario creado correctamente' })
+  @ApiResponse({ status: 409, description: 'El email ya está en uso' })
   create(@CurrentUser() user: { id: string }, @Body() dto: CreateUserDto) {
     return this.userService.create(dto, user.id);
   }
