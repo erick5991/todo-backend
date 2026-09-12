@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CreateTodoDto {
   @ApiProperty({
@@ -24,4 +24,12 @@ export class CreateTodoDto {
   })
   @IsOptional()
   dueDate?: string;
+
+  @ApiPropertyOptional({
+    description: 'ID de la categoría asociada a la tarea',
+    example: 'b3f1c2e0-1234-4a5b-9c6d-7e8f9a0b1c2d',
+  })
+  @IsUUID()
+  @IsOptional()
+  categoryId?: string;
 }
