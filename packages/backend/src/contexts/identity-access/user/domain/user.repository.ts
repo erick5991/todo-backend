@@ -8,9 +8,17 @@ export interface UserCreateData {
   status: 'ACTIVE' | 'BLOCKED';
 }
 
+export interface UserUpdateData {
+  email?: string;
+  name?: string;
+  password?: string;
+}
+
 export abstract class UserRepository {
   abstract findByEmail(email: string): Promise<User | null>;
   abstract findById(id: string): Promise<User | null>;
   abstract findAll(): Promise<User[]>;
   abstract create(data: UserCreateData): Promise<User>;
+  abstract update(id: string, data: UserUpdateData): Promise<User | null>;
+  abstract delete(id: string): Promise<void>;
 }

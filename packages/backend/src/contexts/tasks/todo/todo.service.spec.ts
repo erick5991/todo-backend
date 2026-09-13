@@ -91,6 +91,7 @@ describe('TodoService', () => {
         completed: false,
         userId: 'user-1',
         dueDate: null,
+        categoryId: null,
       });
       expect(notificationPort.send).toHaveBeenCalledWith({
         userId: 'user-1',
